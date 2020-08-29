@@ -42,6 +42,8 @@ def main():
             for line in raw_code_list:
                 if 'getLine1Number' in line.get_output():
                     print(line.get_output())
+                    print('class-name={0}'.format(class_name))
+                    print('method-name={0} {1}'.format(m.name,m.get_descriptor()))
 
 
 if __name__=='__main__':
