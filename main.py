@@ -28,6 +28,11 @@ class StaticAnalysis(object):
 def main():
     sa = StaticAnalysis('app-debug.apk')
     sa.get_androguard_obj()
+    permission_list = sa.a.get_permissions()
+    for p in permission_list:
+        if 'android.permission.READ_PHONE_STATE' in p:
+            print(p)
+    print(permission_list)
     class_list = sa.d.get_classes()
     print('class num:{0}'.format(len(class_list)))
     for class_item in class_list:
@@ -45,6 +50,25 @@ def main():
                     print('class-name={0}'.format(class_name))
                     print('method-name={0} {1}'.format(m.name,m.get_descriptor()))
 
+
+
+def test_str_ana():
+    sa = StaticAnalysis('1720b2f45fbd5c18b6ddd879bd013aeb3eefdd991c0942046f609a5f0ce952a6')
+    sa.get_androguard_obj()
+    v = sa.x.get_tainted_variables()
+    class_list = sa.d.get_classes()
+    for c in class_list:
+        class_name = c.name
+        ms = c.get_methods()
+        for m in ms:
+            d = v.get_strings_by_method(m)
+            if(len(d)>0):
+                for k in d:
+                    print( 'STRING: {}\n'.format(k.get_info()) )
+                    print('class-name={0}'.format(class_name))
+                    print('method-name={0} {1}'.format(m.name,m.get_descriptor()))
+
+    
 
 if __name__=='__main__':
     main()
